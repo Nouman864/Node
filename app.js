@@ -16,9 +16,10 @@ var mkdirp = require('mkdirp');
 const flatsController = {};
 const Flats = require("./models/flats.model");
 const path = require('path');
-const  upload = require('./multer');
-const cloudinary = require('./cloudinary');
+var Promise = require('promise');
 const fs = require('fs');
+const cloudinary = require('cloudinary');
+const dotenv = require('dotenv').config();
 let flats;
 app.use(
     bodyParser.urlencoded({
@@ -54,7 +55,11 @@ mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifi
 
 
 
-
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 
 
@@ -64,7 +69,7 @@ mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifi
 app.get('/',  function (req, res) {
   res.status(200).send({
     message: 'Express backend server'});
-});
+}); 
 
 app.set('port', (process.env.PORT));
 //app.set('port', (process.env.PORT));
@@ -76,190 +81,173 @@ app.use(accessControls);
 
 
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     let path =   'upload';
-//     mkdirp(path, err =>{
-//       if(err){
-//         console.log('err',err);
-//         cb(err, path)
-//       }
-//     })
-//     cb(null,path)
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname)
-//   },
-// });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    let path =   '';
+    mkdirp(path, err =>{
+      if(err){
+        console.log('err',err);
+        cb(err, path)
+      }
+    })
+    cb(null,path)
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  },
+});
 
-// const upload = multer({
-//   storage: storage,
-//   fileFilter: (req, file, cb) => {
-//     // only pdf files accepted
-//   //   if (!file.originalname.match(/\.csv$/)) {
-//   //     return cb(new Error('Only csv files are allowed!'), false);
-//   //   }
-//   //   else{
-//     cb(null, true);
-//   //  }
-//    }
-//   //  ,
-//   // limits: { fileSize: maxSize }
-// });
-app.post('/upload_images', upload.array('files',12), async (req, res) => {
+const uploadss = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    cb(null, true);
+   }
  
-const uploader = async (path) => await cloudinary.uploads(path,'Images')
-if(req.method === 'POST')
-{
-  const urls = [];
-  const files = req.files
-   
-  for(const file of files)
+});
+app.post('/upload_images', uploadss.array('files',12),  (req, res) => {
+  
+    const array = [];
+  const files = req.files;
+  for (var i = 0; i < files.length; i++) 
   {
-      const{path} = file
-
-      const newPath= await uploader(path)
-       urls.push(newPath)
-       fs.unlinkSync(path)
-       
-  }
-  res.status(200),json({
-    message:'imAGES UPLPOAD',
-    dat:urls
-  })
-}
-else{
-  res.status(405),json({
-    err:'imAGES not UPLPOAD'
-  })
+                
+       cloudinary.uploader.upload(files[i].originalname)
+.then((result)=>
+{
+  return res.json(result)
+}).catch((err)=>
+{
+  return res.json(err)
+});
+  
 }
 
 });
 
 
 
-    app.post("/upload", upload.array('files',12), async (req, res, next) => {
+    // app.post("/upload", upload.array('files',12), async (req, res, next) => {
       
-      try{
-        var array = [];
-      const files = req.files;
-      // for(let i of files){
-      //   console.log(i.originalname);
-        for (var i = 0; i < files.length; i++) {
-               array.push(files[i].originalname);
+    //   try{
+    //     var array = [];
+    //   const files = req.files;
+    //   // for(let i of files){
+    //   //   console.log(i.originalname);
+    //     for (var i = 0; i < files.length; i++) {
+    //            array.push(files[i].originalname);
           
-      }
-     console.log(array);
+    //   }
+    //  console.log(array);
     
         
-        // formData.append('ID', this.flatid);
+    //     // formData.append('ID', this.flatid);
       
       
-    //   console.log(files);
-    //  const pathh = files[0].path;
-    //  console.log(pathh);
+    // //   console.log(files);
+    // //  const pathh = files[0].path;
+    // //  console.log(pathh);
 
 
-      // const body = JSON.parse(JSON.stringify(req.body));
-      // const flatid = body.ID;
+    //   // const body = JSON.parse(JSON.stringify(req.body));
+    //   // const flatid = body.ID;
   
       
-      // console.log(body);
-      // console.log(req.body);
-      // console.log(flatid);
-      // body.url = `${flatid}/${pathh}`;
-      // body.city = "";
-      // const flat= new Flats(body);
-      // const result = await flat.save();
+    //   // console.log(body);
+    //   // console.log(req.body);
+    //   // console.log(flatid);
+    //   // body.url = `${flatid}/${pathh}`;
+    //   // body.city = "";
+    //   // const flat= new Flats(body);
+    //   // const result = await flat.save();
     
      
-    // const result = await flat.save();
-    //   console.log(file.fieldname);
-      if(!files)
-      {
-        const error =new Error('plsx');
-        error.httpStatusCode=400
-        return next (error)
+    // // const result = await flat.save();
+    // //   console.log(file.fieldname);
+    //   if(!files)
+    //   {
+    //     const error =new Error('plsx');
+    //     error.httpStatusCode=400
+    //     return next (error)
 
 
-      }
+    //   }
   
-      res.send({sttus:  'ok',
-        array
-    });
-    }
-      catch (ex) {
-        console.log('ex', ex);
-    }
-      });
+    //   res.send({sttus:  'ok',
+    //     array
+    // });
+    // }
+    //   catch (ex) {
+    //     console.log('ex', ex);
+    // }
+    //   });
 
 
 
       
-      var createToken = function () {
+//       var createToken = function () {
 
-        var param = {};
-        param.card ={
-            number: '4242424242424242',
-            exp_month: 2,
-            exp_year:2024,
-            cvc:'212'
-        }
+//         var param = {};
+//         param.card ={
+//             number: '4242424242424242',
+//             exp_month: 2,
+//             exp_year:2024,
+//             cvc:'212'
+//         }
     
-        stripe.tokens.create(param, function (err,token) {
-            if(err)
-            {
-                console.log("err: "+err);
-            }if(token)
-            {
-                console.log("success: "+JSON.stringify(token, null, 2));
-            }else{
-                console.log("Something wrong")
-            }
-        })
-    }
+//         stripe.tokens.create(param, function (err,token) {
+//             if(err)
+//             {
+//                 console.log("err: "+err);
+//             }if(token)
+//             {
+//                 console.log("success: "+JSON.stringify(token, null, 2));
+//             }else{
+//                 console.log("Something wrong")
+//             }
+//         })
+//     }
 
 
 
-//createToken();
-var chargeCustomerThroughTokenID = function () {
+// //createToken();
+// var chargeCustomerThroughTokenID = function () {
 
-  var param = {
-      amount: '2000',
-      currency: 'usd',
-      description:'First payment',
-      customer:'cus_Hu5tTSDSMFBF1c'
-  }
+//   var param = {
+//       amount: '2000',
+//       currency: 'usd',
+//       description:'First payment',
+//       customer:'cus_Hu5tTSDSMFBF1c'
+//   }
 
-  stripe.charges.create(param, function (err,charge) {
-      if(err)
-      {
-          console.log("err: "+err);
-      }if(charge)
-      {
-          console.log("success: "+JSON.stringify(charge, null, 2));
-      }else{
-          console.log("Something wrong")
-      }
-  })
-}
-var addCardToCustomer = function () {
+//   stripe.charges.create(param, function (err,charge) {
+//       if(err)
+//       {
+//           console.log("err: "+err);
+//       }if(charge)
+//       {
+//           console.log("success: "+JSON.stringify(charge, null, 2));
+//       }else{
+//           console.log("Something wrong")
+//       }
+//   })
+// }
+// var addCardToCustomer = function () {
 
-  stripe.customers.createSource('cus_Hu5tTSDSMFBF1c',{source: 'tok_1HKJlsBs0W61I6tPIahX6cPl'}, function (err,card) {
-      if(err)
-      {
-          console.log("err: "+err);
-      }if(card)
-      {
-          console.log("success: "+JSON.stringify(card, null, 2));
-      }else{
-          console.log("Something wrong")
-      }
-  })
-}
+//   stripe.customers.createSource('cus_Hu5tTSDSMFBF1c',{source: 'tok_1HKJlsBs0W61I6tPIahX6cPl'}, function (err,card) {
+//       if(err)
+//       {
+//           console.log("err: "+err);
+//       }if(card)
+//       {
+//           console.log("success: "+JSON.stringify(card, null, 2));
+//       }else{
+//           console.log("Something wrong")
+//       }
+//   })
+// }
 
 //addCardToCustomer();
-  chargeCustomerThroughTokenID();
+  //chargeCustomerThroughTokenID();
 // Routes which should handle requests
 
 app.use("/users", UsersRoutes);
