@@ -28,6 +28,9 @@ const Flat = new Schema({
      city: {
         type: String
     },
+    rent: {
+        type: String
+    },
     Location:{
         type: String
     },

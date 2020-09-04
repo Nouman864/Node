@@ -4,7 +4,7 @@ const router = express.Router();
 const ClientController = require('../controllers/clients.controllers');
 router.post("/login",ClientController.loginUser);
 router.post("/signup",ClientController.registerUser);
-router.get("/clientverify",ClientController.verifyUser);
+router.post("/clientverify",ClientController.verifyUser);
 router.post("/clientpass",ClientController.clientpass);
 router.post("/pay",ClientController.payme);
 // router.get("/:_id",UserController.getSingleUser);

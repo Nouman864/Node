@@ -20,6 +20,8 @@ var Promise = require('promise');
 const fs = require('fs');
 const cloudinary = require('cloudinary');
 const dotenv = require('dotenv').config();
+this.array =[];
+this.image =[];
 let flats;
 app.use(
     bodyParser.urlencoded({
@@ -48,6 +50,7 @@ const RatingsRoutes = require('./routes/ratings.routes');
 const  ResturantratingsRoutes = require('./routes/resturantratings.routes');
 const MenusRoutes = require('./routes/menus.routes');
 const BookedtablesRoutes = require('./routes/bookedtables.routes');
+const { PassThrough } = require('stream');
     /////////// HEROKU Live URL
 const mongoCon = process.env.mongoCon;
 //mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
@@ -104,23 +107,35 @@ const uploadss = multer({
    }
  
 });
-app.post('/upload_images', uploadss.array('files',12),  (req, res) => {
+app.post('/upload_images', uploadss.array('files',2),  (req, res) => {
   
-    const array = [];
   const files = req.files;
-  for (var i = 0; i < files.length; i++) 
+  for (let i = 0; i < files.length; i++) 
   {
                 
-       cloudinary.uploader.upload(files[i].originalname)
+     cloudinary.uploader.upload(files[i].originalname)
 .then((result)=>
 {
-  return res.json(result)
+  
+    this.array.push(result.secure_url);
+      if(i == files.length-1)
+      {
+        console.log(this.array);
+        return res.json(this.array)
+
+      
+      }
+  
 }).catch((err)=>
+  
 {
   return res.json(err)
 });
   
+
 }
+
+
 
 });
 
