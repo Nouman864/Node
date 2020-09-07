@@ -21,7 +21,7 @@ const fs = require('fs');
 const cloudinary = require('cloudinary');
 const dotenv = require('dotenv').config();
 this.array =[];
-this.image =[];
+
 let flats;
 app.use(
     bodyParser.urlencoded({
@@ -50,11 +50,12 @@ const RatingsRoutes = require('./routes/ratings.routes');
 const  ResturantratingsRoutes = require('./routes/resturantratings.routes');
 const MenusRoutes = require('./routes/menus.routes');
 const BookedtablesRoutes = require('./routes/bookedtables.routes');
+const RentflatsRoutes = require('./routes/rentflats.routes');
 const { PassThrough } = require('stream');
     /////////// HEROKU Live URL
 const mongoCon = process.env.mongoCon;
-//mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
-mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
 
 
 
@@ -107,40 +108,133 @@ const uploadss = multer({
    }
  
 });
-app.post('/upload_images', uploadss.array('files',2),  (req, res) => {
-  
+app.post('/upload_images', uploadss.array('files',2), async (req, res) => {
+  try{
   const files = req.files;
+  console.log(files.length);
+  this.array=[];
   for (let i = 0; i < files.length; i++) 
   {
                 
-     cloudinary.uploader.upload(files[i].originalname)
-.then((result)=>
-{
-  
+    const result = await cloudinary.v2.uploader.upload(files[i].originalname,{ public_id: 'myupload' })
+    console.log(result);
     this.array.push(result.secure_url);
-      if(i == files.length-1)
-      {
-        console.log(this.array);
-        return res.json(this.array)
-
-      
-      }
-  
-}).catch((err)=>
-  
-{
-  return res.json(err)
-});
-  
 
 }
+console.log(this.array);
+console.log(files.length);
+let ff = files.length;
+console.log(this.array.length);
+let ar = this.array.length;
+let pic = ar - ff;
+console.log(pic);
+if(pic==0)
+{
+  console.log(this.array);
+    res.send({sttus:  'ok',
+        dataa : this.array,
+        message: 1
+    });
+}
+else
+{
+  
+  for (let j = 0; j < this.array.length; j++) 
+  {
+     if(j == pic)
+     {
+       
+       console.log(j);
+       console.log(pic);
+      console.log( this.array[j]);
+       console.log(this.image.push(
+      this.array[j]
+      ))
+      //   console.log(this.image);
+         pic = pic+1;
+    
+     }
+  }
+  console.log(this.image);
+  res.send({sttus:  'ok',
+  dataa : this.image,
+  message: 1
+});
+}
+}catch (ex)
+ {
+      console.log('ex', ex);
+ }
+});
+app.post('/token',  (req, res) => {
+
+
+  const files = req.body;
+   console.log(files);
+  console.log(files.cid);
+  console.log(files.tokid);
+    stripe.customers.createSource(files.cid,{source: files.tokid}, function (err,card) {
+        if(err)
+        {
+            console.log("err: "+err);
+        }if(card)
+        {
+            console.log("success: "+JSON.stringify(card, null, 2));
+        }else{
+            console.log("Something wrong")
+        }
+    })
+
+
+
+    const param ={};
+    param.amount = files.amount,
+    param.currency = 'usd',
+    param.customer= files.cid
+        stripe.charges.create(param, function (err,charge) {
+            if(err)
+            {
+                console.log("err: "+err);
+            }if(charge)
+            {
+                console.log("success: "+JSON.stringify(charge, null, 2));
+                res.status(200).send
+                   ({
+                     code: 200,
+                         message: success
+                    });
+            }else{
+                console.log("Something wrong")
+            }
+        })
+      
 
 
 
 });
 
+// var createCustomer = function () {
+//   var param ={};
+//   param.email ="mike@gmail.com";
+//   param.name="Mike";
+//   param.description ="from node";
 
-
+//   stripe.customers.create(param, function (err,customer) {
+//       if(err)
+//       {
+//           console.log("err: "+err);
+//       }
+//       if(customer)
+//       {
+//           console.log("success: "+customer)
+//       }
+//       else
+//       {
+//           console.log("Something wrong")
+//       }
+//   })
+  
+// }
     // app.post("/upload", upload.array('files',12), async (req, res, next) => {
       
     //   try{
@@ -277,6 +371,7 @@ app.use("/ratings", RatingsRoutes);
 app.use("/menus", MenusRoutes);
 app.use("/resturantratings", ResturantratingsRoutes);
 app.use("/bookedtables", BookedtablesRoutes);
+app.use("/rentflats", RentflatsRoutes);
 app.use(errorHandler);
 
 app.use(errorMessage);

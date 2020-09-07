@@ -28,8 +28,9 @@ const Flat = new Schema({
      city: {
         type: String
     },
-    rent: {
-        type: String
+    amount:
+     {
+        type: Number
     },
     Location:{
         type: String
@@ -41,7 +42,7 @@ const Flat = new Schema({
         type: String
     },
     image: {
-        type: String
+        type: Array
     },
     url: {
         type: Array

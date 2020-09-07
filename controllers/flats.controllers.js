@@ -78,7 +78,7 @@ flatsController.getFlat = async (req, res) => {
    for (let item of flats){
 
     const id = item._id;
-    const reviews = await Ratings.find({userid: id});
+    const reviews = await Ratings.find({flatid: id});
     let reviewsTotal = 0;
     if(reviews.length)
     {

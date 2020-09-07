@@ -2,30 +2,30 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
-const Rating = new Schema({
+const Rentflat = new Schema({
 
-    flatid: {
+    owner:
+     {
         type: String
        
     },
-    
-    rating:
-    {
+      name:
+      {
         type: String
-    },
-    
-    date:
-    {
+      },
+      date:
+      {
         type: String
-    },
-   
+       
+      },
+    
     is_deleted: {
         type: Boolean,
         default: false
     }
 });
 
-Rating.plugin(mongoosePaginate);
+Rentflat.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Rating", Rating);
+module.exports = mongoose.model("Rentflat", Rentflat);
 
