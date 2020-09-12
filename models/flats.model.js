@@ -28,6 +28,9 @@ const Flat = new Schema({
      city: {
         type: String
     },
+    facility: {
+        type: String
+    },
     amount:
      {
         type: Number
@@ -42,6 +45,9 @@ const Flat = new Schema({
         type: String
     },
     image: {
+        type: Array
+    },
+    roomno: {
         type: Array
     },
     url: {

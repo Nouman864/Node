@@ -7,6 +7,12 @@ const Bookedtable = new Schema({
         type: String
        
     },
+    partysize:
+    {
+       type: String
+    },
+
+
     is_deleted: {
         type: Boolean,
         default: false

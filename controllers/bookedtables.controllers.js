@@ -8,6 +8,7 @@ tableController.booktable = async (req, res) => {
       //console.log(body);
       console.log(body.Table[0].Booked[0].tableno);
       this.match = false;
+      this.book = false;
        const r = body.Table; 
       console.log(r.length);
          for (var i = 0; i < r.length; i++)
@@ -20,6 +21,7 @@ tableController.booktable = async (req, res) => {
         if(tblid.length)
           {
              console.log(" tablid match");
+             this.book = true;
             
           }
           else
@@ -44,6 +46,13 @@ tableController.booktable = async (req, res) => {
         code: 200,
         result,
         message: 'table booked',
+      });
+    }
+    if(this.book === true)
+    {
+      res.status(200).send({
+        code: 200,
+        message: 'table already booked',
       });
     }
   }

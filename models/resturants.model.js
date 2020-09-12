@@ -3,12 +3,14 @@ const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
 const Resturant = new Schema({
-
+     
     owner: {
         type: String
        
     },
-    
+    Timings: {
+        type: Array
+    },
      name: {
         type: String
     },
@@ -24,6 +26,9 @@ const Resturant = new Schema({
     },
     
     image: {
+        type: Array
+    },
+    about: {
         type: String
     },
     url: {

@@ -108,8 +108,9 @@ const uploadss = multer({
    }
  
 });
-app.post('/upload_images', uploadss.array('files',2), async (req, res) => {
-  try{
+app.post('/upload_images', uploadss.array('files',4), async (req, res) => {
+  try
+  {
   const files = req.files;
   console.log(files.length);
   this.array=[];
@@ -122,50 +123,96 @@ app.post('/upload_images', uploadss.array('files',2), async (req, res) => {
 
 }
 console.log(this.array);
-console.log(files.length);
-let ff = files.length;
-console.log(this.array.length);
-let ar = this.array.length;
-let pic = ar - ff;
-console.log(pic);
-if(pic==0)
-{
-  console.log(this.array);
     res.send({sttus:  'ok',
-        dataa : this.array,
+        image : this.array,
         message: 1
     });
-}
-else
-{
+// console.log(this.array);
+// console.log(files.length);
+// let ff = files.length;
+// console.log(this.array.length);
+// let ar = this.array.length;
+// let pic = ar - ff;
+// console.log(pic);
+// if(pic==0)
+// {
+//   console.log(this.array);
+//     res.send({sttus:  'ok',
+//         dataa : this.array,
+//         message: 1
+//     });
+// }
+// else
+// {
   
-  for (let j = 0; j < this.array.length; j++) 
-  {
-     if(j == pic)
-     {
+//   for (let j = 0; j < this.array.length; j++) 
+//   {
+//      if(j == pic)
+//      {
        
-       console.log(j);
-       console.log(pic);
-      console.log( this.array[j]);
-       console.log(this.image.push(
-      this.array[j]
-      ))
-      //   console.log(this.image);
-         pic = pic+1;
+//        console.log(j);
+//        console.log(pic);
+//       console.log( this.array[j]);
+//        console.log(this.image.push(
+//       this.array[j]
+//       ))
+//       //   console.log(this.image);
+//          pic = pic+1;
     
-     }
-  }
-  console.log(this.image);
-  res.send({sttus:  'ok',
-  dataa : this.image,
-  message: 1
-});
+//      }
+//   }
+//   console.log(this.image);
+//   res.send({sttus:  'ok',
+//   dataa : this.image,
+//   message: 1
+// });
+// }
+}catch (ex)
+ {
+      console.log('ex', ex);
+ }
+});  
+
+
+
+
+
+
+
+
+/////////////////////////////////////Resturant IMAGES///////////////////////////
+app.post('/upload_rest', uploadss.array('files',4), async (req, res) => {
+  try
+  {
+  const files = req.files;
+  console.log(files.length);
+  this.array=[];
+  for (let i = 0; i < files.length; i++) 
+  {
+                
+    const result = await cloudinary.v2.uploader.upload(files[i].originalname,{ public_id: 'myupload' })
+    console.log(result);
+    this.array.push(result.secure_url);
+
 }
+console.log(this.array);
+    res.send({sttus:  'ok',
+        image : this.array,
+        message: 1
+    });
 }catch (ex)
  {
       console.log('ex', ex);
  }
 });
+
+
+
+
+
+
+
+
 app.post('/token',  (req, res) => {
 
 

@@ -29,16 +29,18 @@ clientsController.registerUser = async (req, res) => {
                pass: 'xxxxxxxxx9'
            }
        }); 
-       const token = jsonwebtoken.sign({
-        data: result,
-        role: 'Client'
-     }, process.env.JWT_KEY, { expiresIn: '7d' });
+    //    const token = jsonwebtoken.sign({
+    //     data: result,
+    //     role: 'Client'
+    //  }, process.env.JWT_KEY, { expiresIn: '7d' });
+     const email =  `${req.body.email}`
        const mailOptions = {
         from :'noumanafzaljbd@gmail.com', // sender this is your email here
-        to : `${req.body.email}`, // receiver email2
+        to : `${req.body.email}`,
+      // receiver email2
         subject: "Account Verification",
         html: `<h1>Hello Friend Please Click on this link<h1><br>Token
-    <br><a href="http://localhost:8100/clientverify?token=${token}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
+    <br><a href="https://rehayash.herokuapp.com//clients/verifyuser/${email}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
       };
                                                             
       transporter.sendMail(mailOptions, function (err, info) {
@@ -73,11 +75,13 @@ clientsController.registerUser = async (req, res) => {
 
   clientsController.verifyUser = async (req, res) => {
     try {
-      console.log("ndjnadkja"); 
-      const body = req.body;
-      console.log("ndjnadkja"); 
-      const email = body.email;
-      console.log("ndjnadkja"); 
+      var email = req.params['email']
+      console.log(email);
+      // console.log("ndjnadkja"); 
+      // const body = req.body;
+      // console.log("ndjnadkja"); 
+      // const email = body.email;
+      // console.log("ndjnadkja"); 
       const result = await Clients.findOne({ email: email });
      
         if (!result) 
@@ -86,7 +90,7 @@ clientsController.registerUser = async (req, res) => {
         }
              
       else {
-        const email = body.email;
+      
       const result = await Clients.updateOne({email: email}, {$set:{active:true}});
       }
       res.send({
