@@ -72,12 +72,12 @@ tableController.booktable = async (req, res) => {
       const body = req.body;
       this.match = false;
       const r = body.TableBooked;
-      console.log(r);
+      //console.log(r);
       for (var i = 0; i < r.length; i++)
       {
         console.log(r.length);
          let Rmid = body.TableBooked[i];
-         console.log(Rmid);
+         //console.log(Rmid);
         const rmid = await  Tablecodes.find({ "TableBooked": Rmid})
            console.log(rmid);
         if(rmid.length)
@@ -118,32 +118,32 @@ tableController.booktable = async (req, res) => {
     
       const body = req.body;
       this.match = false;
-      const r = body.tableqr;
-      console.log(r);
-        const rmid = await  Tablecodes.find({ "TableBooked": r })
+         let Rmid = body.tableqr;
+         console.log(Rmid);
+        const rmid = await  Tablecodes.find({ "TableBooked": Rmid})
            console.log(rmid);
         if(rmid.length)
           {
-             console.log(" scanning verified");
-
-      res.status(200).send({
-        code: 200,
-        message: 'scaning verified',
-      });
-    
-    }
-    else
-    { 
-      this.match = true;
-       
-    }
-    if(this.match == true)
+             console.log(" Fuckk offfffffffffffff");
+             res.status(200).send({
+              code: 200,
+              message: 'scaning verified',
+            });
+             
+          }
+          else
+          {
+            console.log("giniv");
+            this. match = true;
+          }
+    if(this.match === true)
     {
       res.status(200).send({
         code: 200,
         message: 'user not registered',
       });
     }
+
     } catch (error) {
       console.log('error', error);
       return res.status(500).send(error);

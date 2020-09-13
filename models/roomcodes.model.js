@@ -14,7 +14,9 @@ const Roomcodes = new Schema({
     RoomReserved: {
         type: Array   
     },
-    
+    tableqr: {
+        type: String  
+    },
     
 });
 

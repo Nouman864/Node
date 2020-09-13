@@ -14,7 +14,10 @@ const Tablecodes = new Schema({
     TableBooked: {
         type: Array   
     },
-    
+   
+    tableqr: {
+        type: String  
+    },
     
 });
 
