@@ -12,7 +12,9 @@ const Bookedtable = new Schema({
        type: String
     },
 
-
+    TableBooked: {
+        type: Array   
+    },
     is_deleted: {
         type: Boolean,
         default: false

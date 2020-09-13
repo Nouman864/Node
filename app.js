@@ -419,6 +419,8 @@ app.use("/menus", MenusRoutes);
 app.use("/resturantratings", ResturantratingsRoutes);
 app.use("/bookedtables", BookedtablesRoutes);
 app.use("/rentflats", RentflatsRoutes);
+
+
 app.use(errorHandler);
 
 app.use(errorMessage);

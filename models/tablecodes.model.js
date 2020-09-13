@@ -20,4 +20,4 @@ const Tablecodes = new Schema({
 
 Tablecodes.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Roomcodes", Tablecodes);
+module.exports = mongoose.model("Tablecodes", Tablecodes);
