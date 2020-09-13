@@ -40,7 +40,7 @@ clientsController.registerUser = async (req, res) => {
       // receiver email2
         subject: "Account Verification",
         html: `<h1>Hello Friend Please Click on this link<h1><br>Token
-    <br><a href="https://rehayash.herokuapp.com//clients/verifyuser/${email}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
+    <br><a href="https://rehayash.herokuapp.com/clients/verifyuser/${email}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
       };
                                                             
       transporter.sendMail(mailOptions, function (err, info) {
@@ -77,6 +77,7 @@ clientsController.registerUser = async (req, res) => {
     try {
       var email = req.params['email']
       console.log(email);
+      let response;
       // console.log("ndjnadkja"); 
       // const body = req.body;
       // console.log("ndjnadkja"); 
@@ -91,10 +92,11 @@ clientsController.registerUser = async (req, res) => {
              
       else {
       
-      result1 = await Clients.updateOne({email: email}, {$set:{active:true}});
+      await Clients.updateOne({email: email}, {$set:{active:true}});
+       response = "email has been varified";
       }
       res.send({
-        data: result1
+        data: response
       });
     }
      catch (ex) {
