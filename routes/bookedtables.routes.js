@@ -7,6 +7,7 @@ const checkAuth = require('../middleware/check-auth');
 // router.get("/", checkAuth,hotelController.getAll);
 router.post("/add",checkAuth, bookedtableController.booktable);
 router.post("/table",checkAuth, bookedtableController.tablecode);
+router.post("/scantable",checkAuth, bookedtableController.scan);
 // router.post("/scan",checkAuth,reservedroomController.scan);
 //  router.get("/:owner", checkAuth,hotelController.getHotel)
 //  router.put("/:id", checkAuth,hotelController.updateHotel);

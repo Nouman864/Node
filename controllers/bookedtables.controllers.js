@@ -112,4 +112,41 @@ tableController.booktable = async (req, res) => {
       return res.status(500).send(error);
     }
   };
+
+  tableController.scan = async (req, res) => {
+    try {
+    
+      const body = req.body;
+      this.match = false;
+      const r = body.tableqr;
+      console.log(r);
+        const rmid = await  Tablecodes.find({ "TableBooked": r })
+           console.log(rmid);
+        if(rmid.length)
+          {
+             console.log(" scanning verified");
+
+      res.status(200).send({
+        code: 200,
+        message: 'scaning verified',
+      });
+    
+    }
+    else
+    { 
+      this.match = true;
+       
+    }
+    if(this.match == true)
+    {
+      res.status(200).send({
+        code: 200,
+        message: 'user not registered',
+      });
+    }
+    } catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+  };
   module.exports = tableController;
