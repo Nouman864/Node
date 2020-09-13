@@ -91,10 +91,10 @@ clientsController.registerUser = async (req, res) => {
              
       else {
       
-      const result = await Clients.updateOne({email: email}, {$set:{active:true}});
+      result1 = await Clients.updateOne({email: email}, {$set:{active:true}});
       }
       res.send({
-        data: result
+        data: result1
       });
     }
      catch (ex) {
