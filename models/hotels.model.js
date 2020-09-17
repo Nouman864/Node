@@ -23,8 +23,14 @@ const Hotel = new Schema({
     Location:{
         type: String
     },
+    check: {
+        type: String
+    },
+    facility: {
+        type: String
+    },
     
-    url: {
+    images: {
         type: Array
     },
     is_deleted: {

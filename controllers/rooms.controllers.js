@@ -47,10 +47,10 @@ roomsController.addroom = async (req, res) => {
 
     try {
     
-      const owner = req.params.owner;
+      const owner = req.params.ownerr;
      
-     const rooms = await Rooms.find({ owner: owner});
-      //console.log(flat);  this.flats = data.data;
+     const rooms = await Rooms.find({ hotelid: owner});
+    console.log(this.rooms);
       res.status(200).send({
         code: 200,
         message: 'Successful',
@@ -59,6 +59,61 @@ roomsController.addroom = async (req, res) => {
     
     }
     catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+  };
+
+  roomsController.getmultipleroom = async (req, res) => {
+
+    try {
+    
+      const owner1 = req.params.hotel;
+      console.log(owner1);
+     const rooms = await Rooms.find({owner: owner1});
+      //console.log(rooms);
+      res.status(200).send({
+        code: 200,
+        message: 'Successful',
+        data: rooms
+      });
+    
+    }
+    catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+  };
+
+
+  roomsController.updateroom = async (req, res) => {
+    if (!req.params.id) {
+      res.status(500).send({
+        message: 'ID missing'
+      });
+    }
+    try {
+      const _id = req.params.id;
+      let updates = req.body;
+      const result = await Rooms.updateOne(
+        {
+          _id: _id
+        },
+        {
+          $set: updates
+        },
+        {
+          upsert: true,
+          runValidators: true
+        }
+      );
+      if (result.nModified == 1) {
+        res.status(200).send({
+          code: 200,
+          message: 'Updated Successfully'
+        });
+      }
+    } catch (error) {
       console.log('error', error);
       return res.status(500).send(error);
     }

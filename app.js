@@ -51,11 +51,15 @@ const  ResturantratingsRoutes = require('./routes/resturantratings.routes');
 const MenusRoutes = require('./routes/menus.routes');
 const BookedtablesRoutes = require('./routes/bookedtables.routes');
 const RentflatsRoutes = require('./routes/rentflats.routes');
+const HotelratingsRoutes = require('./routes/hotelratings.routes');
+const BookedroomsRoutes = require('./routes/bookedrooms.routes');
+const AdminsRoutes = require('./routes/admins.routes');
+
 const { PassThrough } = require('stream');
     /////////// HEROKU Live URL
 const mongoCon = process.env.mongoCon;
-mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
-//mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+//mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
 
 
 
@@ -207,58 +211,103 @@ console.log(this.array);
 });
 
 
+//////////////////////////////HOTEL IMAGES////////////////////////
+app.post('/hotelimage', uploadss.array('files',4), async (req, res) => {
+  try
+  {
+  const files = req.files;
+  console.log(files.length);
+  this.array=[];
+  for (let i = 0; i < files.length; i++) 
+  {
+                
+    const result = await cloudinary.v2.uploader.upload(files[i].originalname)
+    console.log(result);
+    this.array.push(result.secure_url);
+
+}
+console.log(this.array);
+    res.send({sttus:  'ok',
+        image : this.array,
+        message: 1
+    });
+}catch (ex)
+ {
+      console.log('ex', ex);
+ }
+});
 
 
 
 
 
-
-app.post('/token',  (req, res) => {
-
-
-  const files = req.body;
-   console.log(files);
-  console.log(files.cid);
-  console.log(files.tokid);
-    stripe.customers.createSource(files.cid,{source: files.tokid}, function (err,card) {
-        if(err)
-        {
-            console.log("err: "+err);
-        }if(card)
-        {
-            console.log("success: "+JSON.stringify(card, null, 2));
-        }else{
-            console.log("Something wrong")
-        }
-    })
+// app.post('/token',  (req, res) => {
 
 
+//   const files = req.body;
+//    console.log(files);
+//   console.log(files.cid);
+//   console.log(files.tokid);
+//     stripe.customers.createSource(files.cid,{source: files.tokid}, function (err,card) {
+//         if(err)
+//         {
+//             console.log("err: "+err);
+//         }if(card)
+//         {
+//             console.log("success: "+JSON.stringify(card, null, 2));
+//         }else{
+//             console.log("Something wrong")
+//         }
+//     })
 
-    const param ={};
-    param.amount = files.amount,
-    param.currency = 'usd',
-    param.customer= files.cid
-        stripe.charges.create(param, function (err,charge) {
-            if(err)
-            {
-                console.log("err: "+err);
-            }if(charge)
-            {
-                console.log("success: "+JSON.stringify(charge, null, 2));
-                res.status(200).send
-                   ({
-                     code: 200,
-                         message: success
-                    });
-            }else{
-                console.log("Something wrong")
-            }
-        })
+//   });
+  
+// app.post('/hoteltoken',  (req, res) => {
+
+
+//   const files = req.body;
+//    console.log(files);
+//   console.log(files.cid);
+//   console.log(files.tokid);
+//     stripe.customers.createSource(files.cid,{source: files.tokid}, function (err,card) {
+//         if(err)
+//         {
+//             console.log("err: "+err);
+//         }if(card)
+//         {
+//             console.log("success: "+JSON.stringify(card, null, 2));
+//         }else{
+//             console.log("Something wrong")
+//         }
+//     })
+
+ 
+
+//     const param ={};
+//     param.amount = files.amount,
+//     param.currency = files.currency,
+//     param.customer= files.cid
+//         stripe.charges.create(param, function (err,charge) {
+//             if(err)
+//             {
+//                 console.log("err: "+err);
+//             }if(charge)
+//             {
+//                 console.log("success: "+JSON.stringify(charge, null, 2));
+//                 res.status(200).send
+//                    ({
+//                      code: 200
+//                     });
+//             }else{
+//                 console.log("Something wrong")
+//             }
+//         })
       
 
 
+//   });
 
-});
+
 
 // var createCustomer = function () {
 //   var param ={};
@@ -419,6 +468,10 @@ app.use("/menus", MenusRoutes);
 app.use("/resturantratings", ResturantratingsRoutes);
 app.use("/bookedtables", BookedtablesRoutes);
 app.use("/rentflats", RentflatsRoutes);
+app.use("/hotelratings", HotelratingsRoutes);
+app.use("/bookedrooms", BookedroomsRoutes);
+app.use("/admin", AdminsRoutes);
+
 
 
 app.use(errorHandler);

@@ -8,6 +8,7 @@ const Resturant = new Schema({
         type: String
        
     },
+    
     Timings: {
         type: Array
     },

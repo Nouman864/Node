@@ -8,14 +8,25 @@ const Room = new Schema({
         type: Boolean,
         default: false
     },
-    Rooms: {
+    Roomsinfo: {
         type: Array   
+    },
+    hotelid: {
+        type: String
+       
     },
     owner: {
         type: String
        
     },
-    
+    facility:
+    {
+        type:Array
+    },
+    img:
+    {
+        type:Array
+    },
 });
 
 Room.plugin(mongoosePaginate);

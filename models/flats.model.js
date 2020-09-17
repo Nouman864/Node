@@ -47,9 +47,10 @@ const Flat = new Schema({
     image: {
         type: Array
     },
-    roomno: {
+    facility: {
         type: Array
     },
+
     url: {
         type: Array
     },

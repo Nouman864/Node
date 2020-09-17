@@ -7,16 +7,14 @@ const Roomcodes = new Schema({
         type: String
        
     },
-    is_deleted: {
-        type: Boolean,
-        default: false
-    },
     RoomReserved: {
         type: Array   
     },
-    tableqr: {
-        type: String  
-    },
+    is_deleted: {
+        type: Boolean,                                                           
+        default: false
+    }
+   
     
 });
 

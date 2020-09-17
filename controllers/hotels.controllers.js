@@ -1,5 +1,6 @@
 const hotelsController = {};
 const Hotels = require('../models/hotels.model');
+const Ratings = require('../models/hotelratings.model');
 const jsonwebtoken =  require('jsonwebtoken');
 hotelsController.getAll = async (req, res) => {
   let hotels;
@@ -49,8 +50,30 @@ hotelsController.addhotel = async (req, res) => {
     
       const owner1 = req.params.owner;
      
-     const hotels = await Hotels.find({ owner: owner1});
-      //console.log(flat);  this.flats = data.data;
+     const myhotels = await Hotels.find({ owner: owner1});
+     let hotels = JSON.parse(JSON.stringify(myhotels))
+     for (let item of hotels){
+
+      const id = item._id;
+      const reviews = await Ratings.find({hotelid: id});
+      let reviewsTotal = 0;
+      if(reviews.length)
+      {
+             const adrom =[];
+          for (let review of reviews)
+          {
+  
+            adrom.push(review.rating)
+            
+          }
+          var sumNumber = adrom.reduce((acc, cur) => acc + Number(cur), 0) ;
+      reviewsTotal = Number( sumNumber / reviews.length);
+  
+      }
+  
+      item['reviewsTotal'] = reviewsTotal;
+  
+     }
       res.status(200).send({
         code: 200,
         message: 'Successful',
@@ -91,6 +114,30 @@ hotelsController.addhotel = async (req, res) => {
           message: 'Updated Successfully'
         });
       }
+    } catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+  };
+
+  hotelsController.deletehotel = async (req, res) => {
+    if (!req.params.id) {
+      Fu;
+      res.status(500).send({
+        message: 'ID missing'
+      });
+    }
+    try {
+      const _id = req.params.id;
+  
+      const result = await Hotels.findOneAndDelete({
+        _id: _id
+      });
+     
+      res.status(200).send({
+        code: 200,
+        message: 'Deleted Successfully'
+      });
     } catch (error) {
       console.log('error', error);
       return res.status(500).send(error);
