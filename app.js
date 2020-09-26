@@ -58,8 +58,8 @@ const AdminsRoutes = require('./routes/admins.routes');
 const { PassThrough } = require('stream');
     /////////// HEROKU Live URL
 const mongoCon = process.env.mongoCon;
-//mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
-mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
 
 
 
@@ -121,15 +121,14 @@ app.post('/upload_images', uploadss.array('files',4), async (req, res) => {
   for (let i = 0; i < files.length; i++) 
   {
                 
-    const result = await cloudinary.v2.uploader.upload(files[i].originalname,{ public_id: 'myupload' })
+    const result = await cloudinary.v2.uploader.upload(files[i].originalname)
     console.log(result);
     this.array.push(result.secure_url);
 
 }
 console.log(this.array);
     res.send({sttus:  'ok',
-        image : this.array,
-        message: 1
+        image : this.array
     });
 // console.log(this.array);
 // console.log(files.length);
@@ -201,8 +200,7 @@ app.post('/upload_rest', uploadss.array('files',4), async (req, res) => {
 }
 console.log(this.array);
     res.send({sttus:  'ok',
-        image : this.array,
-        message: 1
+        image : this.array
     });
 }catch (ex)
  {

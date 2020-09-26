@@ -70,8 +70,8 @@ roomsController.addroom = async (req, res) => {
     
       const owner1 = req.params.hotel;
       console.log(owner1);
-     const rooms = await Rooms.find({owner: owner1});
-      //console.log(rooms);
+     const rooms = await Rooms.find({hotelid: owner1});
+      console.log(rooms);
       res.status(200).send({
         code: 200,
         message: 'Successful',

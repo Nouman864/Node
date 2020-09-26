@@ -270,7 +270,8 @@ bookedroomController.bookroom = async (req, res) => {
                    console.log("success: "+JSON.stringify(charge, null, 2));
                    res.status(200).send
                       ({
-                        code: 200
+                        code: 200,
+                        message:"Succefull payment"
                        });
                }else{
                    console.log("Something wrong")
