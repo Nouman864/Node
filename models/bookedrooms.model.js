@@ -21,6 +21,12 @@ const Bookedroom = new Schema({
     checkout: {
         type: String  
     },
+    hotelid: {
+        type: String  
+    },
+    ownerid: {
+        type: String  
+    },
     is_deleted: {
         type: Boolean,
         default: false

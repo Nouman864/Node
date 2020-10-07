@@ -26,10 +26,7 @@ const Hotel = new Schema({
     check: {
         type: String
     },
-    facility: {
-        type: String
-    },
-    
+   
     images: {
         type: Array
     },

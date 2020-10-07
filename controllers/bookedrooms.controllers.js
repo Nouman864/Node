@@ -4,53 +4,72 @@ const admins = require('../models/admins.model');
 const roomcodes = require('../models/roomcodes.model');
 const jsonwebtoken =  require('jsonwebtoken');
 const stripe = require('stripe')('sk_test_51H4ItYBs0W61I6tPaV2hsFYP3RqsE2TCzCeqJ4l6qCTX9eeb7iMQFMSRdI1pToKoP0NHXK2nRhl8E7RxnNVqcCA200WWcRCqke');
+bookedroomController.getbooking= async (req, res) => {
+
+  try {
+  
+    const owner = req.params.owner;
+   
+   let result = await Bookedroom.find({ ownerid: owner});
+   
+
+    res.status(200).send({
+      code: 200,
+      message: 'Successful',
+      data: result
+        
+    });
+   
+  }
+  catch (error) {
+    console.log('error', error);
+    return res.status(500).send(error);
+  }
+};
+
+bookedroomController.deleteBook = async (req, res) => {
+  if (!req.params.id) {
+    Fu;
+    res.status(500).send({
+      message: 'ID missing'
+    });
+  }
+  try {
+    const _id = req.params.id;
+
+    const result = await Bookedroom.findOneAndDelete({
+      _id: _id
+    });
+   
+    res.status(200).send({
+      code: 200,
+      message: 'Deleted Successfully'
+    });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send(error);
+  }
+};
+
+
+
 bookedroomController.bookroom = async (req, res) => {
     try {
       //let result;
       const body = req.body;
-      this.book = false;
-        //console.log(body);
-       //console.log(body.Rooms.length);
-       for (var i = 0; i < body.Rooms.length; i++)
-       {
-        let romn = body.Rooms[i].roomno;
-        const tblid = await  Bookedroom.find({ "Rooms.roomno": romn })
-           //console.log(tblid);
-        if(tblid.length)
-          {
-             //console.log(" tablid match");
-             this.book = true;
-            
-          }
-          else
-          {
-            //console.log("giniv");
-            this. match = true;
-          }
-      
-        }
-    if(this.match === true)
-    {
-       const body = req.body;
+      console.log(body);
+       const no = body.Rooms;
           const  bookedroom = new  Bookedroom (body);
          result = await  bookedroom.save();
-        
-    }
-    if(this.match === true)
-    {
-      res.status(200).send({
-        code: 200,
-        data:result,
-        message: 'room booked',
-      });
-    }
-    if(this.book === true)
-    {
-      res.status(200).send({
-        code: 200,
-        message: 'room already booked',
-      });
-    }
+        res.status(200).send({
+          code: 200,
+          data:result,
+          message: 'room booked',
+        });
+      
+      
+    
+    
   }
      catch (error) {
       console.log('error', error);
@@ -60,6 +79,58 @@ bookedroomController.bookroom = async (req, res) => {
         );
     }
   };
+              
+
+
+
+  bookedroomController.checkroom = async (req, res) => {
+    try {
+      //let result;
+      this.lock = [];
+      const body = req.body;
+      console.log(body.info[0].roomno)
+      console.log(body.idd);
+      let id = body.idd;
+      //  const no = body.Roo
+      // this.book = false;
+      const tblid = await  Bookedroom.find({ "hotelid": id })
+        console.log(tblid.length);
+
+        for(let i = 0; i<body.info.length; i++)
+        {
+          for(let j = 0; j<tblid.length; j++)
+        {
+            if(body.info[i].roomno  == tblid[j].Rooms)
+            {
+
+                this.lock.push(body.info[i].roomno);
+              // res.status(200).send({
+              //   code: 200,
+              //   message: 'QRCode Added Successfully',
+              // });
+            }
+
+        }
+      }
+      res.status(200).send({
+                code: 200,
+                message: this.lock
+              });
+           console.log(this.lock);
+  
+  }
+     catch (error) {
+      console.log('error', error);
+      console.log("czd");
+      return res.status(500).send(
+        error
+        );
+    }
+  };
+
+
+
+
 
   bookedroomController.roomcode = async (req, res) => {
     try {

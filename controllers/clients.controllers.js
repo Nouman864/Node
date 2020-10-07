@@ -40,7 +40,7 @@ clientsController.registerUser = async (req, res) => {
       // receiver email2
         subject: "Account Verification",
         html: `<h1>Hello Friend Please Click on this link<h1><br>Token
-    <br><a href="https://rehayash.herokuapp.com/clients/verifyuser/${email}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
+    <br><a href="http://localhost:3000/clients/clientverify/${email}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
       };
                                                             
       transporter.sendMail(mailOptions, function (err, info) {

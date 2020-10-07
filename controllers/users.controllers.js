@@ -75,17 +75,17 @@ usersController.registerUser = async (req, res) => {
              pass: 'xxxxxxxxx9'
          }
      }); 
- const token = jsonwebtoken.sign({
-      data: result,
-      role: 'User'
-   }, process.env.JWT_KEY, { expiresIn: '7d' });
-
+//  const token = jsonwebtoken.sign({
+//       data: result,
+//       role: 'User'
+//    }, process.env.JWT_KEY, { expiresIn: '7d' });
+       const email = `${req.body.email}`;
      const mailOptions = {
       from :'noumanafzaljbd@gmail.com', // sender this is your email here
       to : `${req.body.email}`, // receiver email2
       subject: "Account Verification",
       html: `<h1>Hello Friend Please Click on this link<h1><br>Token
-  <br><a href="http://localhost:8100/verify?token=${token}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
+  <br><a href="http://localhost:3000/users/verify/${email}">CLICK ME TO ACTIVATE YOUR ACCOUNT</a>`
     };
 
     transporter.sendMail(mailOptions, function (err, info) {
@@ -121,21 +121,23 @@ usersController.registerUser = async (req, res) => {
 ///// VERIFY USER
 usersController.verifyUser = async (req, res) => {
     try {
-      console.log("ndjnadkja"); 
-      const body = req.body;
-      console.log("ndjnadkja"); 
-      const email = body.email;
+      var email = req.params['email']
+      console.log(email);
+      let response;
      
       const result = await Users.findOne({ email: email });
         if (!result) 
         {
-                      
+              console.log(result);        
         }
              
       else {
-        const email = body.email;
-      const result = await Users.updateOne({email: email}, {$set:{active:true}});
+        await Users.updateOne({email: email}, {$set:{active:true}});
+        response = "email has been varified";
       }
+      res.send({
+        data: response
+      });
     }
      catch (ex) {
       console.log('ex', ex);

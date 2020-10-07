@@ -85,7 +85,7 @@ roomsController.addroom = async (req, res) => {
     }
   };
 
-
+ 
   roomsController.updateroom = async (req, res) => {
     if (!req.params.id) {
       res.status(500).send({
@@ -94,19 +94,42 @@ roomsController.addroom = async (req, res) => {
     }
     try {
       const _id = req.params.id;
+      console.log(_id);
       let updates = req.body;
+     console.log(updates);
+    let no = String(updates.Roomsinfo[0].roomno);
+    let beds = String(updates.Roomsinfo[0].beds);  
+    let amount = String(updates.Roomsinfo[0].amount);
+        let index = 1;
       const result = await Rooms.updateOne(
-        {
-          _id: _id
+          {
+            _id:_id, "Roomsinfo.roomno": no
+          },
+           
+         {
+            $set: 
+            {
+              
+          
+              [`Roomsinfo.$.beds`]: beds,
+              [`Roomsinfo.$.facility`]: updates.Roomsinfo[0].facility,
+              [`Roomsinfo.$.amount`]: amount,
+              [`Roomsinfo.$.image`]: updates.Roomsinfo[0].image
+          
+          
+            }
         },
-        {
-          $set: updates
-        },
-        {
-          upsert: true,
-          runValidators: true
-        }
+          // ['Roomsinfo.$.facility']:"jdffff"
+            // [`Roomsinfo.$.amount`]:updates.Roomsinfo[0].amount,
+            // [`Roomsinfo.$.image`]:updates.Roomsinfo[0].image
+         
+        // {
+        //   upsert: true,
+        //   runValidators: true
+        // }
       );
+      // console.log(_id);
+      // console.log(result);
       if (result.nModified == 1) {
         res.status(200).send({
           code: 200,

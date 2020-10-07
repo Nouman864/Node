@@ -9,9 +9,6 @@ const Resturant = new Schema({
        
     },
     
-    Timings: {
-        type: Array
-    },
      name: {
         type: String
     },
@@ -30,6 +27,12 @@ const Resturant = new Schema({
         type: Array
     },
     about: {
+        type: String
+    },
+    open: {
+        type: String
+    },
+    close: {
         type: String
     },
     url: {
