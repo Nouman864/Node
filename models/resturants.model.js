@@ -35,6 +35,9 @@ const Resturant = new Schema({
     close: {
         type: String
     },
+    check: {
+        type: String
+    },
     url: {
         type: Array
     },

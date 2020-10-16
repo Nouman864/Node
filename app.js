@@ -54,6 +54,7 @@ const RentflatsRoutes = require('./routes/rentflats.routes');
 const HotelratingsRoutes = require('./routes/hotelratings.routes');
 const BookedroomsRoutes = require('./routes/bookedrooms.routes');
 const AdminsRoutes = require('./routes/admins.routes');
+const TablesRoutes = require('./routes/tables.routes');
 
 const { PassThrough } = require('stream');
     /////////// HEROKU Live URL
@@ -469,6 +470,7 @@ app.use("/rentflats", RentflatsRoutes);
 app.use("/hotelratings", HotelratingsRoutes);
 app.use("/bookedrooms", BookedroomsRoutes);
 app.use("/admin", AdminsRoutes);
+app.use("/tables", TablesRoutes);
 
 
 
