@@ -15,6 +15,7 @@ router.post("/scan",checkAuth,bookedroomController.scan);
 router.post("/token",checkAuth,bookedroomController.newtoken);
 router.post("/chk",checkAuth,bookedroomController.checkroom);
 router.post("/payme",checkAuth,bookedroomController.pay);
+router.post("/room",checkAuth,bookedroomController.room);
 //  router.get("/:owner", checkAuth,hotelController.getHotel)
 //  router.put("/:id", checkAuth,hotelController.updateHotel);
 // router.delete("/:id",checkAuth, flatController.deleteBook);

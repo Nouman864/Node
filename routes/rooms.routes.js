@@ -9,6 +9,8 @@ const checkAuth = require('../middleware/check-auth');
   router.get("/:ownerr", checkAuth,roomController.getroom);
  router.get("/:hotel", checkAuth,roomController.getmultipleroom);
 //  router.get("/:owner", checkAuth,hotelController.getHotel)
- router.put("/:id", checkAuth,roomController.updateroom);
+ router.post("/data", checkAuth,roomController.updateroom);
+ router.put("/:id",checkAuth,roomController.updatenew);
+ router.post("/del",checkAuth,roomController.delete);
 // router.delete("/:id",checkAuth, flatController.deleteBook);
 module.exports = router;

@@ -59,6 +59,7 @@ bookedroomController.bookroom = async (req, res) => {
       const body = req.body;
       console.log(body);
        const no = body.Rooms;
+       
           const  bookedroom = new  Bookedroom (body);
          result = await  bookedroom.save();
         res.status(200).send({
@@ -368,7 +369,31 @@ bookedroomController.bookroom = async (req, res) => {
 
 
 
+  bookedroomController.room = async (req, res) => {
+
+    try { 
     
+      const owner = req.body;
+      console.log(owner);
+  
+      const result = await Bookedroom.find({ clientid: req.body.owner });
+       console.log(result);
+      if(result)
+      {
+      res.status(200).send({
+        code: 200,
+        message: 'Successful',
+        data: result
+          
+      });
+    }
+     
+    }
+    catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+  };
         
   
 

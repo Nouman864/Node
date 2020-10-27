@@ -87,6 +87,69 @@ roomsController.addroom = async (req, res) => {
 
  
   roomsController.updateroom = async (req, res) => {
+    try {
+      
+
+      let updates = req.body;
+      console.log(updates);
+     const _id = updates._id;
+     let room = String(updates.roomno);
+     let bed = String(updates.beds);
+     let amout= String(updates.amount);
+     let image = Array(updates.image);
+     let facility = [];
+     for (var i = 0; i < updates.Roomsinfo.length; i++)
+     {
+         facility.push((updates.Roomsinfo[i]));
+
+        
+       
+     }
+    //  let image = [];
+    //  for (var j = 0; j < updates.image.length; j++)
+    //  {
+    //      image.push((updates.image[i]));
+
+        
+       
+    //  }
+     console.log(facility);
+      
+       const result = await Rooms.updateOne(
+         {
+            _id:_id, "Roomsinfo.roomno": room
+          },
+           
+         {
+            $set: 
+            {
+              
+              [`Roomsinfo.$.roomno`]: room,
+              [`Roomsinfo.$.beds`]: bed,
+              [`Roomsinfo.$.amount`]: amout,
+              [`Roomsinfo.$.facility`]: facility,
+              [`Roomsinfo.$.image`]: image
+          
+            }
+        },
+      );
+      if (result.nModified == 1) {
+        res.status(200).send({
+          code: 200,
+          message: 'Updated Successfully'
+        });
+      }
+    } catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+  };
+
+
+
+
+
+  roomsController.updatenew = async (req, res) => {
     if (!req.params.id) {
       res.status(500).send({
         message: 'ID missing'
@@ -96,46 +159,70 @@ roomsController.addroom = async (req, res) => {
       const _id = req.params.id;
       console.log(_id);
       let updates = req.body;
-     console.log(updates);
-    let no = String(updates.Roomsinfo[0].roomno);
-    let beds = String(updates.Roomsinfo[0].beds);  
-    let amount = String(updates.Roomsinfo[0].amount);
-        let index = 1;
+      console.log(updates);    
+       let roomno = String(updates.Roomsinfo[0].roomno);
+       let beds = String(updates.Roomsinfo[0].beds);  
+       let facility = Array(updates.Roomsinfo[0].facility);
+       let image = Array(updates.Roomsinfo[0].image);
+       let amount = String(updates.Roomsinfo[0].amount);
+
+    
       const result = await Rooms.updateOne(
-          {
-            _id:_id, "Roomsinfo.roomno": no
-          },
-           
-         {
-            $set: 
-            {
-              
-          
-              [`Roomsinfo.$.beds`]: beds,
-              [`Roomsinfo.$.facility`]: updates.Roomsinfo[0].facility,
-              [`Roomsinfo.$.amount`]: amount,
-              [`Roomsinfo.$.image`]: updates.Roomsinfo[0].image
-          
-          
-            }
+        {
+          _id:_id
         },
-          // ['Roomsinfo.$.facility']:"jdffff"
-            // [`Roomsinfo.$.amount`]:updates.Roomsinfo[0].amount,
-            // [`Roomsinfo.$.image`]:updates.Roomsinfo[0].image
+
+     {
+         $push: {'Roomsinfo': {roomno: roomno, beds: beds,  facility: facility ,  amount: amount,  image: image}}
+     },
          
-        // {
-        //   upsert: true,
-        //   runValidators: true
-        // }
       );
-      // console.log(_id);
-      // console.log(result);
+      
       if (result.nModified == 1) {
         res.status(200).send({
           code: 200,
           message: 'Updated Successfully'
         });
       }
+     
+    
+    } catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+    
+  };
+
+
+
+
+  roomsController.delete = async (req, res) => {
+
+    try {
+     
+      let del = req.body;
+      console.log(del);
+    const _id = req.body._id;
+      console.log(_id);
+
+        const result = await Rooms.updateOne(
+  
+          { _id: _id},
+        {
+          $pull : {
+            Roomsinfo : {roomno: String(del.roomno)}
+         
+        },
+        }
+        
+          );
+            res.status(200).send({
+              code: 200,
+              message: 'tabel'
+            });
+          
+             
+        
     } catch (error) {
       console.log('error', error);
       return res.status(500).send(error);

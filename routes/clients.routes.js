@@ -7,6 +7,7 @@ router.post("/signup",ClientController.registerUser);
 router.get("/clientverify/:email",ClientController.verifyUser);
 router.post("/clientpass",ClientController.clientpass);
 router.post("/pay",ClientController.payme);
+router.get("/:ownerr",ClientController.getclient);
 // router.get("/:_id",UserController.getSingleUser);
 // // router.post("/",UserController.addUser);
 // router.put("/:_id", UserController.updateUser);

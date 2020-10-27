@@ -87,7 +87,10 @@ hotelsController.addhotel = async (req, res) => {
     }
   };
 
+  
+   
   hotelsController.updateHotel = async (req, res) => {
+  
     if (!req.params.id) {
       res.status(500).send({
         message: 'ID missing'
@@ -119,6 +122,21 @@ hotelsController.addhotel = async (req, res) => {
       return res.status(500).send(error);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   hotelsController.deletehotel = async (req, res) => {
     if (!req.params.id) {

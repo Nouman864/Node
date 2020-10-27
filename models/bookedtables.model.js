@@ -7,22 +7,37 @@ const Bookedtable = new Schema({
         type: String
        
     },
-    partysize:
+    restid:
+    {
+        type: String
+    },
+     tableno:
+    {
+        type: String
+    },
+    capacity:
     {
        type: String
     },
 
-    TableBooked: {
-        type: Array   
+    type : 
+    {
+        type: String  
     },
+    date : 
+    {
+        type: String  
+    },
+    time : 
+    {
+        type: String  
+    },
+
     is_deleted: {
         type: Boolean,
         default: false
     },
-    Table: {
-        type: Array   
-    },
-
+  
    
     
 });

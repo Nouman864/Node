@@ -23,10 +23,12 @@ const Room = new Schema({
     {
         type:Array
     },
-    img:
+    
+    images:
     {
         type:Array
-    },
+    }
+    
 });
 
 Room.plugin(mongoosePaginate);

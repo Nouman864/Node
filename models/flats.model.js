@@ -8,10 +8,22 @@ const Flat = new Schema({
         type: String
        
     },
-
      name: {
         type: String
     },
+    about: {
+        type: String
+    },
+    check: {
+        type: String
+    },
+    rooms: {
+        type: String
+    },
+    email: {
+        type: String
+    },
+
     number: {                                       
         type: String
 
@@ -28,9 +40,7 @@ const Flat = new Schema({
      city: {
         type: String
     },
-    facility: {
-        type: String
-    },
+    
     amount:
      {
         type: Number
@@ -45,13 +55,6 @@ const Flat = new Schema({
         type: String
     },
     image: {
-        type: Array
-    },
-    facility: {
-        type: Array
-    },
-
-    url: {
         type: Array
     },
     is_deleted: {

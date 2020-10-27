@@ -18,6 +18,12 @@ const Rentflat = new Schema({
         type: String
        
       },
+       clientid:
+      {
+        type: String
+       
+      },
+
     
     is_deleted: {
         type: Boolean,

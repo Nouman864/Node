@@ -213,4 +213,33 @@ clientsController.payme = async (req, res) => {
         }
     })   
 };
+
+
+
+
+
+clientsController.getclient = async (req, res) => {
+
+  try {
+  
+    const owner = req.params.ownerr;
+    console.log(owner);
+   
+    const result = await Clients.findOne({ _id: owner });
+   
+
+    res.status(200).send({
+      code: 200,
+      message: 'Successful',
+      data: result
+        
+    });
+   
+  }
+  catch (error) {
+    console.log('error', error);
+    return res.status(500).send(error);
+  }
+};
+
   module.exports = clientsController;

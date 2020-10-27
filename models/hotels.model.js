@@ -17,6 +17,11 @@ const Hotel = new Schema({
         type: String
 
     },
+    
+    email: {                                       
+        type: String
+
+    },
      city: {
         type: String
     },
