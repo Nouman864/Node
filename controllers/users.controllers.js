@@ -181,17 +181,25 @@ usersController.updatepass = async (req, res) => {
 usersController.loginUser = async (req, res) => {
     try {
         const body = req.body;
+
         const email = body.email;
         
         // lets check if email exists
         
         const result = await Users.findOne({ email: email });
+        if (!result) 
+        {
+              console.log("sjdsf");
+              res.send({ message: 'User not registered' });
+              return 0;
+        }
         if(result.active==true)
         {
           console.log("nn");
+            
         if (!result) 
         {
-                     
+             
         }
              
       else {
@@ -223,7 +231,8 @@ usersController.loginUser = async (req, res) => {
       }
       else
       {
-         console.log("fuck you");
+         console.log("f you");
+         res.send({ message: 'User not registered' });
       } 
     }catch (ex) {
         console.log('ex', ex);

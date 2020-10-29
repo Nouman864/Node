@@ -55,6 +55,9 @@ const HotelratingsRoutes = require('./routes/hotelratings.routes');
 const BookedroomsRoutes = require('./routes/bookedrooms.routes');
 const AdminsRoutes = require('./routes/admins.routes');
 const TablesRoutes = require('./routes/tables.routes');
+const Halls = require('./routes/halls.routes');
+const HallMenus = require('./routes/hallmenus.routes');
+
 
 const { PassThrough } = require('stream');
     /////////// HEROKU Live URL
@@ -113,6 +116,39 @@ const uploadss = multer({
    }
  
 });
+
+
+
+
+
+
+/////////////CLIENT PROFILE ////////////////////////////////
+app.post('/clientprofile', uploadss.array('files',1), async (req, res) => {
+  try
+  {
+  const files = req.files;
+  console.log(files.length);
+  this.array=[];
+  for (let i = 0; i < files.length; i++) 
+  {
+                
+    const result = await cloudinary.v2.uploader.upload(files[i].originalname,{ public_id: 'myupload' })
+    console.log(result);
+    this.array.push(result.secure_url);
+
+}
+console.log(this.array);
+    res.send({sttus:  'ok',
+        image : this.array
+    });
+}catch (ex)
+ {
+      console.log('ex', ex);
+ }
+});
+
+
+
 app.post('/upload_images', uploadss.array('files',4), async (req, res) => {
   try
   {
@@ -471,7 +507,8 @@ app.use("/hotelratings", HotelratingsRoutes);
 app.use("/bookedrooms", BookedroomsRoutes);
 app.use("/admin", AdminsRoutes);
 app.use("/tables", TablesRoutes);
-
+app.use("/halls", Halls);
+app.use("/hallmenus", HallMenus);
 
 
 app.use(errorHandler);

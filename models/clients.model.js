@@ -27,10 +27,16 @@ const Client = new Schema({
     secretToken: {
         type: String
     },
-    active:{
-        type:Boolean
+    image:{
+        type: Array
     },
-    
+    active:
+    {
+        type: Boolean
+    },
+    password: {
+        type: String
+    },
     role: {
         type: String
     },
