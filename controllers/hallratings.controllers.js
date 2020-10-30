@@ -20,7 +20,7 @@ hallratingController.addreview = async (req, res) => {
   };
 
 
-  hallratingController.getreveiw = async (req, res) => {
+  hallratingController.getreview = async (req, res) => {
 
     try {
       const body = req.body;
