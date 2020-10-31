@@ -75,10 +75,7 @@ usersController.registerUser = async (req, res) => {
              pass: 'xxxxxxxxx9'
          }
      }); 
-//  const token = jsonwebtoken.sign({
-//       data: result,
-//       role: 'User'
-//    }, process.env.JWT_KEY, { expiresIn: '7d' });
+
        const email = `${req.body.email}`;
      const mailOptions = {
       from :'noumanafzaljbd@gmail.com', // sender this is your email here

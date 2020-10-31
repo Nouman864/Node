@@ -2,7 +2,29 @@ const hallsController = {};
 const Halls = require('../models/halls.model');
 // const Ratings = require('../models/hotelratings.model');
 const jsonwebtoken =  require('jsonwebtoken'); 
- 
+hallsController.getAll = async (req, res) => {
+  let halls;
+  try {
+    let merged = {};
+    const start = 0;
+    const length = 100;
+    halls = await Halls.paginate(
+      merged,
+      {
+        offset: parseInt(start),
+        limit: parseInt(length)
+      }
+    );
+    res.status(200).send({
+      code: 200,
+      message: 'Successful',
+      data: halls
+    });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send(error);
+  }
+};
  
  
  

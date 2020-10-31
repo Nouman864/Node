@@ -76,4 +76,80 @@ hallmenusController.add = async (req, res) => {
       return res.status(500).send(error);
     }
   };
+
+
+  hallmenusController.edit = async (req, res) => {
+  
+    try {
+      
+
+      let updates = req.body;
+     console.log(updates);
+     const _id = updates._id;
+     let dish = String(updates.dish);
+    let price = String(updates.price);  
+    let menu = String(updates.menu);  
+    let idd = String(updates.id);
+    
+    if(menu == '1')
+    {
+      const result = await Menus.updateOne(
+          {
+            _id:_id, "menu1.id": idd
+          },
+           
+         {
+            $set: 
+            {
+              
+              [`menu1.$.dish`]: dish,
+              [`menucharge1`]: price,
+          
+            }
+        },
+      );
+      
+      if (result.nModified == 1) {
+        res.status(200).send({
+          code: 200,
+          message: 'Updated Successfully'
+        });
+      }
+    }
+
+
+    
+    if(menu == '2')
+    {
+      const result = await Menus.updateOne(
+          {
+            _id:_id, "menu2.id": idd
+          },
+           
+         {
+            $set: 
+            {
+              
+              [`menu2.$.dish`]: dish,
+              [`menucharge2`]: price,
+          
+            }
+        },
+      );
+      
+      if (result.nModified == 1) {
+        res.status(200).send({
+          code: 200,
+          message: 'Updated Successfully'
+        });
+      }
+    }
+
+
+
+    } catch (error) {
+      console.log('error', error);
+      return res.status(500).send(error);
+    }
+  };
   module.exports = hallmenusController;

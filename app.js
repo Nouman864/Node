@@ -57,13 +57,16 @@ const AdminsRoutes = require('./routes/admins.routes');
 const TablesRoutes = require('./routes/tables.routes');
 const Halls = require('./routes/halls.routes');
 const HallMenus = require('./routes/hallmenus.routes');
+const HallRatings = require('./routes/hallratings.routes');
+const BookingHalls = require('./routes/bookinghalls.routes');
+
 
 
 const { PassThrough } = require('stream');
     /////////// HEROKU Live URL
 const mongoCon = process.env.mongoCon;
-mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
-//mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+//mongoose.connect(mongoCon,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://dbadmin:xxxxxxxx8@cluster0-whpqa.mongodb.net/bookyapp?retryWrites=true&w=majority',{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
 
 
 
@@ -509,6 +512,8 @@ app.use("/admin", AdminsRoutes);
 app.use("/tables", TablesRoutes);
 app.use("/halls", Halls);
 app.use("/hallmenus", HallMenus);
+app.use("/hallratings", HallRatings);
+app.use("/bookinghalls", BookingHalls);
 
 
 app.use(errorHandler);

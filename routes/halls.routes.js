@@ -9,6 +9,7 @@ router.post("/add",checkAuth,hallController.addhall);
 router.get("/:owner", checkAuth,hallController.gethall);
 router.delete("/:id",checkAuth, hallController.deletehall);
 router.put("/:id", checkAuth,hallController.updatehall);
+router.get("/", checkAuth,hallController.getAll);
 //  router.get("/:owner", checkAuth,hotelController.getHotel);
 //  router.put("/:id", checkAuth,hotelController.updateHotel);
 // router.delete("/:id",checkAuth, hotelController.deletehotel);
