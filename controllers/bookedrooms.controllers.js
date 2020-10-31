@@ -189,13 +189,14 @@ bookedroomController.bookroom = async (req, res) => {
       this.match = false;
          let Rmid = body.roomqr;
          console.log(Rmid);
-        const rmid = await  roomcodes.find({ "RoomReserved": Rmid})
+        const rmid = await  Bookedroom.find({ "Rooms": Rmid})
            console.log(rmid);
         if(rmid.length)
           {
              //console.log(" Fuckk offfffffffffffff");
              res.status(200).send({
               code: 200,
+              data: rmid,
               message: 'scaning verified',
             });
              
