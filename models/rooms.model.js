@@ -23,11 +23,11 @@ const Room = new Schema({
     {
         type:Array
     },
-    
-    images:
+    image:
     {
         type:Array
     }
+    
     
 });
 

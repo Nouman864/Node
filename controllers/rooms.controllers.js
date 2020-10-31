@@ -96,24 +96,9 @@ roomsController.addroom = async (req, res) => {
      let room = String(updates.roomno);
      let bed = String(updates.beds);
      let amout= String(updates.amount);
-     let image = Array(updates.image);
-     let facility = [];
-     for (var i = 0; i < updates.Roomsinfo.length; i++)
-     {
-         facility.push((updates.Roomsinfo[i]));
-
-        
-       
-     }
-    //  let image = [];
-    //  for (var j = 0; j < updates.image.length; j++)
-    //  {
-    //      image.push((updates.image[i]));
-
-        
-       
-    //  }
-     console.log(facility);
+     let image =  (updates.image);
+     let facility = (updates.Roomsinfo)
+     
       
        const result = await Rooms.updateOne(
          {
@@ -162,8 +147,8 @@ roomsController.addroom = async (req, res) => {
       console.log(updates);    
        let roomno = String(updates.Roomsinfo[0].roomno);
        let beds = String(updates.Roomsinfo[0].beds);  
-       let facility = Array(updates.Roomsinfo[0].facility);
-       let image = Array(updates.Roomsinfo[0].image);
+       let facility = (updates.Roomsinfo[0].facility);
+       let image = (updates.Roomsinfo[0].image);
        let amount = String(updates.Roomsinfo[0].amount);
 
     
