@@ -188,17 +188,31 @@ bookedroomController.bookroom = async (req, res) => {
       const body = req.body;
       this.match = false;
          let Rmid = String(body.roomqr);
+         let client = String(body.client);
+         console.log(client);
          console.log(Rmid);
-        const rmid = await  Bookedroom.find({ "Rooms": Rmid})
+        const rmid = await  Bookedroom.find({ "clientid": client})
            console.log(rmid);
         if(rmid.length)
           {
-             
-             res.status(200).send({
+            const rm = await  Bookedroom.find({ "Rooms": Rmid})
+            if(rm.length)
+            {
+                 res.status(200).send({
               code: 200,
               data: rmid,
               message: 'scaning verified',
             });
+
+            }
+            else
+          {
+            res.status(200).send({
+              code: 200,
+              message: 'user not registered',
+            });
+          }
+            
              
           }
           else
