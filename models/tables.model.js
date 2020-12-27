@@ -9,6 +9,9 @@ const Table = new Schema({
         type: String
        
     },
+    email: {
+        type: String
+    },
     Ta: {
          type: Array   
     },

@@ -11,7 +11,10 @@ const Bookedroom = new Schema({
     {
        type: String
     },
-
+    
+    cnic: {
+        type: String   
+    },
     Rooms: {
         type: Array   
     },

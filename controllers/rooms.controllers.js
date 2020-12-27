@@ -50,7 +50,7 @@ roomsController.addroom = async (req, res) => {
       const owner = req.params.ownerr;
      
      const rooms = await Rooms.find({ hotelid: owner});
-    console.log(this.rooms);
+    // console.log(this.rooms);
       res.status(200).send({
         code: 200,
         message: 'Successful',
@@ -69,9 +69,9 @@ roomsController.addroom = async (req, res) => {
     try {
     
       const owner1 = req.params.hotel;
-      console.log(owner1);
+      // console.log(owner1);
      const rooms = await Rooms.find({hotelid: owner1});
-      console.log(rooms);
+      // console.log(rooms);
       res.status(200).send({
         code: 200,
         message: 'Successful',
@@ -91,7 +91,7 @@ roomsController.addroom = async (req, res) => {
       
 
       let updates = req.body;
-      console.log(updates);
+      // console.log(updates);
      const _id = updates._id;
      let room = String(updates.roomno);
      let bed = String(updates.beds);
@@ -144,12 +144,13 @@ roomsController.addroom = async (req, res) => {
       const _id = req.params.id;
       console.log(_id);
       let updates = req.body;
+      console.log("newewew");
       console.log(updates);    
-       let roomno = String(updates.Roomsinfo[0].roomno);
-       let beds = String(updates.Roomsinfo[0].beds);  
-       let facility = (updates.Roomsinfo[0].facility);
-       let image = (updates.Roomsinfo[0].image);
-       let amount = String(updates.Roomsinfo[0].amount);
+       let roomno = String(updates.roomno);
+       let beds = String(updates.beds);  
+       let facility = (updates.facility);
+       let image = (updates.image);
+       let amount = String(updates.amount);
 
     
       const result = await Rooms.updateOne(

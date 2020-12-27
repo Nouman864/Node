@@ -11,6 +11,14 @@ const Bookedtable = new Schema({
     {
         type: String
     },
+    email:
+    {
+        type: String
+    },
+    name:
+    {
+        type: String
+    },
      tableno:
     {
         type: String

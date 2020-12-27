@@ -1,6 +1,7 @@
 const tableController = {};
 const Bookedtable = require('../models/bookedtables.model');
 const Tablecodes = require('../models/tablecodes.model');
+const nodemailer = require("nodemailer");
 const jsonwebtoken =  require('jsonwebtoken');
 tableController.add = async (req, res) => {
     try {
@@ -10,12 +11,50 @@ tableController.add = async (req, res) => {
        const tb = new Bookedtable(body);
        const result = await tb.save();
       
-       res.status(200).send({
-        code: 200,
-        message: 'Table  booked  Successfully',
-      });
-  
-   
+              /////////// send email
+              var transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                  user: 'noumanafzaljbd@gmail.com',
+                  pass: 'xxxxxxxxx9'
+                   }
+               }); 
+          
+                 const name = `${body.name}`;
+                 const date = `${body.date}`;
+                 const time = `${body.time}`;
+                 const tableno = `${body.tableno}`;
+                 
+                 const email = `${body.email}`;
+          
+               const mailOptions = {
+                from :'noumanafzaljbd@gmail.com', // sender this is your email here
+                to : `${body.email}`, // receiver email2
+                subject: "The following table has been reserved",
+                html: `<h1>Name:, ${name} <h1>
+                <br>
+                <h1>Date: ${date} <h1>
+                <br>
+                <h1>Time: ${time} <h1>
+                <br>
+                <h1>Table NO: ${tableno} <h1>
+              
+                  `
+              };
+          
+              transporter.sendMail(mailOptions, function (err, info) {
+                if(err)
+                  console.log(err)
+                else
+                  console.log(info);
+             });
+              res.send({
+                message: 'successful'
+              });
+              // res.status(200).send({
+              //   code: 200,
+              //   message: 'Table  booked  Successfully',
+              // });
   }
      catch (error) {
       console.log('error', error);

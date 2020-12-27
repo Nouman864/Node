@@ -2,6 +2,7 @@ const bookedroomController = {};
 const Bookedroom = require('../models/bookedrooms.model');
 const admins = require('../models/admins.model');
 const roomcodes = require('../models/roomcodes.model');
+const nodemailer = require("nodemailer");
 const jsonwebtoken =  require('jsonwebtoken');
 const stripe = require('stripe')('sk_test_51H4ItYBs0W61I6tPaV2hsFYP3RqsE2TCzCeqJ4l6qCTX9eeb7iMQFMSRdI1pToKoP0NHXK2nRhl8E7RxnNVqcCA200WWcRCqke');
 bookedroomController.getbooking= async (req, res) => {
@@ -55,18 +56,57 @@ bookedroomController.deleteBook = async (req, res) => {
 
 bookedroomController.bookroom = async (req, res) => {
     try {
-      //let result;
+    
       const body = req.body;
       console.log(body);
        const no = body.Rooms;
-       
           const  bookedroom = new  Bookedroom (body);
          result = await  bookedroom.save();
-        res.status(200).send({
+      
+          /////////// send email
+          var transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+              user: 'noumanafzaljbd@gmail.com',
+              pass: 'xxxxxxxxx9'
+               }
+           });   
+      
+             const rooms = `${body.Rooms}`;
+             const checkin = `${body.checkin}`;
+             const checkout = `${body.checkout}`;
+             const night = `${body.night}`;
+             
+             const email = `${body.email}`;
+      
+           const mailOptions = {
+            from :'noumanafzaljbd@gmail.com', // sender this is your email here
+            to : `${body.email}`, // receiver email2
+            subject: "The following Rooms has been Booked",
+            html: `<h1>Room No:, ${rooms} <h1>
+            <br>
+            <h1>checkin: ${checkin} <h1>
+            <br>
+            <h1>checkout: ${checkout} <h1>
+            <br>
+            <h1>Night Stay: ${night} <h1>
+          
+              `
+          };
+      
+          transporter.sendMail(mailOptions, function (err, info) {
+            if(err)
+              console.log(err)
+            else
+              console.log(info);
+         });
+       
+         res.status(200).send({
           code: 200,
           data:result,
           message: 'room booked',
         });
+      
       
       
     
